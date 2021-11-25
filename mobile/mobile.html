@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+    <title>Mobile Controller</title>
+    <link rel="stylesheet" href='./mobile.css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Arvo">
+</head>
+
+<body>
+    <div class='header'>
+        <span class="header-title">Remoberry</span>
+    </div>
+
+    <div class="container">
+        <!-- this is to grab the link for our media and send it to our express api
+             to be processed. This is so we can spawn a iframe on the main page on the target machine.
+         -->
+        <label>Link your Video</label>
+        <input placeholder="https://www.youtu.be/dQw4w9WgXcQ" id='media-input'></input>
+        <!-- <span style="margin: 0 auto; margin-bottom: 10px; font-size: 14px;">Media Functions</span> -->
+        <span style="margin: 8px auto;">Player Control</span>
+        <button type="submit" id='media-input-button' onclick="PlayPause();">Play/Pause</button>
+        <button type="submit" id='fullscreen-button' onclick="Fullscreen();">Fullscreen</button>
+        <br>
+        <span style="margin: 8px auto;">Volume Control</span>
+        <button type="submit" onclick="volumeUp();">Volume Up</button>
+        <button type="submit" onclick="volumeDown();">Volume Down</button>
+        <br>
+        <br>
+
+    </div>
+    <script src="scripts/api.js"></script>
+</body>

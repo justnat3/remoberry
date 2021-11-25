@@ -1,0 +1,35 @@
+/* styles.css */
+
+body {
+    font-family: 'Arvo', serif;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: #333; color: white;
+}
+
+.card {
+	box-shadow: 0 10px 40px 5px rgb(107, 107, 107);
+	background: rgba(255, 255, 255, 0.90);
+	text-align: center;
+	border-radius: 5px;
+	overflow: hidden;
+	margin: 5em auto;
+	height: 800px;
+	width: 900px;
+}
+
+.qr-header {
+    margin: 0 auto;
+    padding-bottom: 0px;
+    margin-top: 20px;
+    color: rgb(56, 54, 54);
+}
+
+canvas {
+    margin-top: 10px;
+    margin: 0 auto;
+}

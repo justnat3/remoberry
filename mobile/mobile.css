@@ -1,0 +1,65 @@
+input {
+    line-height: 1;
+    border-radius: 5px;
+    border-color: #000000;
+    border-width: 3px;
+    color: black;
+    margin: 10px;
+    margin-bottom: 30px;
+}
+
+.options {
+    font-size: 12px;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 9fr 2fr;
+}
+
+.header-title {
+    width: 10%;
+    font-size: 12px;
+}
+
+button {
+    font-weight: 600;
+    color: black;
+    background-color: #a1f5ce;
+    font-size: 14px; 
+    margin: 5px;
+    margin-bottom: 12px;
+    min-height: 35px;
+    border-radius: 3px;
+    border: 0;
+    line-height: 4;
+    text-align: center;
+}
+
+button:disabled {
+    background: grey;
+}
+
+.container {
+    flex-direction: column;
+    margin: 0 auto;
+
+    display: flex;
+    width: 80vw;
+}
+
+label {
+    font-weight: 400;
+    margin: 0 auto;
+    padding-top: 30px; 
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+body {
+    font-size: 16px;
+    background-color: #2f312f;
+    color: #f7faf7;
+    font-family: 'Arvo', serif;
+}
