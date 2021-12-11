@@ -103,6 +103,15 @@ ipcRenderer.on('volume-up', (_) => {
     }
 });
 
+ipcRenderer.on('mute', (_) => {
+    volume = parseInt(window.sessionStorage.getItem('volume'));
+    if (document.getElementById('player')) {
+        player.setVolume(0);
+        if (volume === 0) return;
+        window.sessionStorage.setItem('volume', 0);
+    }
+});
+
 ipcRenderer.on('volume-down', (_, arg) => {
     // get current volume
     volume = parseInt(window.sessionStorage.getItem('volume'));

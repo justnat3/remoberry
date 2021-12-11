@@ -117,6 +117,22 @@ function volumeUp() {
     );
 }
 
+function mute() {
+
+    const url = `http://${ip}:${port}/mute`;
+
+    /*
+     * Create and send the request back to our API
+     */
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({
+            value: 1
+        })
+    );
+}
+
 function volumeDown() {
     const url = `http://${ip}:${port}/voldown`;
     console.log(url)

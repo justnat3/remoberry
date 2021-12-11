@@ -158,7 +158,16 @@ expressApp.post('/voldown', (_, res) => {
     res.end();
 });
 
-/* 
+expressApp.post('/mute', (_, res) => {
+    mainWindow.webContents.send(
+        'mute',
+        0
+    );
+    res.status(200);
+    res.end();
+});
+
+/*
   * Load the Video
   */
 expressApp.post('/vidid', jsonParser, (req, res) => {
