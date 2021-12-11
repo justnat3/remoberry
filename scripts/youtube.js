@@ -1,5 +1,16 @@
-let tag; 
+/*
+ *
+ *  * Copyright (c) 2020, Nathan Reed <nreed@linux.com>
+ *  *
+ *  * SPDX-License-Identifier: MIT
+ *
+ */
+
+
+let tag;
+let volume;
 let scriptTag;
+let player;
 
 tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
@@ -11,18 +22,16 @@ scriptTag.parentNode.insertBefore(tag, scriptTag);
 function getWindowsSize() {
     let h = window.innerHeight;
     let w = window.innerWidth;
-    return [w,h];
+    return [w, h];
 }
 
-ipcRenderer.on('action-play-video', (_,arg) => {
+ipcRenderer.on('action-play-video', (_, arg) => {
     // remove present iframe instances
     document.querySelectorAll('iframe').forEach(
         (elem) => {
             elem.parentNode.removeChild(elem);
         }
     );
-
-    console.log('attempt to play video')
 
     // attempt to delete the card to get rid of QR Code staging
     let card = document.getElementById('card');
@@ -35,21 +44,21 @@ ipcRenderer.on('action-play-video', (_,arg) => {
 
 // correct iframe size when we resize the window
 window.addEventListener('resize', updateYoutubeIFrameSize);
+
 function updateYoutubeIFrameSize() {
-    let size = getWindowsSize();
-    let w = size[0];
-    let h = size[1];
-    document.getElementById('player').width = w;
-    document.getElementById('player').height = h;
+    const size = getWindowsSize();
+    const w = size[0];
+    const h = size[1];
+    if (document.getElementById('player')) {
+        document.getElementById('player').width = w;
+        document.getElementById('player').height = h;
+    }
 }
 
 function createYoutubeIFrameInstance(split) {
-
-
-    console.log('iframe-instance-start got ', split)
-    let size = getWindowsSize();
-    let w = size[0];
-    let h = size[1];
+    const size = getWindowsSize();
+    const w = size[0];
+    const h = size[1];
 
     let prediv = document.getElementById('player')
     if (prediv) prediv.remove();
@@ -62,66 +71,70 @@ function createYoutubeIFrameInstance(split) {
     player = new YT.Player('player', {
         height: h.toString(),
         width: w.toString(),
-        videoId: split, 
+        videoId: split,
         playerVars: {
-        'playsinline': 1
+            "playsinline": 1
         },
-        // events: {
-        //   'onReady': onPlayerReady,
-        //   'onStateChange': onPlayerStateChange
-        // }
+        events: {
+            'onReady': onPlayerReady
+        }
     });
+
     // get DOM elements from the youtube iframe
     // player.getIframe().contentWindow.document
-
-    setTimeout((e) => {player.playVideo();}, 300)
-    
+    setTimeout(() => {
+        player.playVideo();
+    }, 700);
 }
 
+function onPlayerReady(e) {
+    // set initial volume
+    e.target.setVolume(50);
+}
+
+ipcRenderer.on('volume-up', (_) => {
+    // get current volume
+    volume = parseInt(window.sessionStorage.getItem('volume'));
+
+    if (document.getElementById('player')) {
+        player.setVolume(volume + 10);
+        if (volume === 100) return;
+        window.sessionStorage.setItem('volume', volume + 10);
+    }
+});
+
+ipcRenderer.on('volume-down', (_, arg) => {
+    // get current volume
+    volume = parseInt(window.sessionStorage.getItem('volume'));
+    console.log(volume)
+    if (document.getElementById('player')) {
+        player.setVolume(volume - 10);
+        if (volume === 0 ) return;
+        window.sessionStorage.setItem('volume', volume - 10);
+    }
+});
+
+
 ipcRenderer.on('play', (_, arg) => {
-    console.log("deciding on: ", arg)
     switch (arg) {
         case 1:
-            console.log("Playing video");
-            player.playVideo();
-            window.sessionStorage.setItem('isPlaying', 0);
-            break;
-        
+            if (document.getElementById('player')) {
+                player.playVideo();
+                window.sessionStorage.setItem('isPlaying', '0');
+                break;
+            }
+
         case 0:
-            console.log("Pausing video");
-            player.pauseVideo();
-            window.sessionStorage.setItem('isPlaying', 1);
+            if (document.getElementById('player')) {
+                player.pauseVideo();
+                window.sessionStorage.setItem('isPlaying', '1');
+            }
             break;
-        
+
         default:
             console.error("invalid response from main process", arg);
             break;
     }
-    return;
-});
 
-ipcRenderer.on('fullscreen', (_, arg) => {
-    if (window.sessionStorage.getItem('isPlaying') == 0) {
-        console.log("deciding fullscreen on: ", arg)
-        switch (arg) {
-            case 1:
-                console.log("Fullscreen");
-                let fcele = document.querySelector("[title='Full screen (f)']").click();
-                window.sessionStorage.setItem('isFullscreen', 0);
-                break;
-            
-            case 0:
-                console.log("UnFullscreen");
-                player.pauseVideo();
-                document.getElementsByClassName('ytp-fullscreen-button').click();
-                window.sessionStorage.setItem('isFullscreen', 1);
-                break;
-            
-            default:
-                console.error("invalid response from main process", arg);
-                break;
-        }
-    }
-return;
 });
 

@@ -24,7 +24,7 @@ body {
 
 .qr-header {
     margin: 0 auto;
-    padding-bottom: 0px;
+    padding-bottom: 0;
     margin-top: 20px;
     color: rgb(56, 54, 54);
 }

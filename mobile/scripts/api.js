@@ -1,15 +1,24 @@
+/*
+ *
+ *  * Copyright (c) 2020, Nathan Reed <nreed@linux.com>
+ *  *
+ *  * SPDX-License-Identifier: MIT
+ *
+ */
+
 let port;
 let ip;
 let id;
+let volume;
 let prevVideoID;
 // TODO: URL should really just be in the global context
 
 /*
  * ensure to send the link for the youtube video
  */
-function SendVideoLink () {
+function SendVideoLink() {
     // this leads back to our API
-    const url = "http://"+ip+":"+port+'/vidid';
+    const url = `http://${ip}:${port}/vidid`;
 
     // get input url value, and assign it to prev to look at later
     let media = document.getElementById('media-input').value;
@@ -41,7 +50,7 @@ function SendVideoLink () {
          * Deny any media we do not support
          */
         default:
-            alert("Media Not Avaliable");
+            alert("Media Not Available");
             return;
 
     }
@@ -52,12 +61,12 @@ function SendVideoLink () {
 
     console.log(url, "attempting to send video")
 
-    // finally send the video ID back to the API
+    // finally, send the video ID back to the API
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify({
-        vid: id
+            vid: id
         })
     );
 
@@ -69,29 +78,32 @@ function SendVideoLink () {
 function getAddrInfoRoutine() {
     // a little parsing routine for the ip & port combo we get from the cookie
     let cookie = document.cookie.split('; ');
-    for (let i=0;cookie.length;i++) {
+    for (let i = 0; cookie.length; i++) {
         let data = cookie[i];
+        console.log(data)
 
-        if (data == undefined) break;
+        if (data === undefined) break;
 
         if (data.includes('port')) {
             // kekw assign to local variable
             port = data.split('=')[1];
-            
+
         } else if (data.includes('ip_addr')) {
             // kekw do it again
             ip = data.split('=')[1];
+
+        } else if (data.includes('volume')){
+            volume = data.split('=')[1];
 
         } else {
             alert(`altered data: ${data}`);
             console.log(data);
         }
     }
-    return;
 }
 
 function volumeUp() {
-    const url = "http://"+ip+":"+port+'/up';
+    const url = `http://${ip}:${port}/volup`;
 
     /*
      * Create and send the request back to our API
@@ -100,13 +112,13 @@ function volumeUp() {
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify({
-        value: 1 
+            value: 1
         })
     );
 }
 
 function volumeDown() {
-    const url = "http://"+ip+":"+port+'/down';
+    const url = `http://${ip}:${port}/voldown`;
     console.log(url)
 
     /*
@@ -116,18 +128,20 @@ function volumeDown() {
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify({
-        value: 1 
+            value: 1
         })
     );
 }
 
 function Fullscreen() {
     getAddrInfoRoutine();
-    const url = "http://"+ip+":"+port+'/fullscreen';
+    const url = `http://${ip}:${port}/fullscreen`;
     console.log(url, ip, port)
     document.getElementById('fullscreen-button').disabled = true;
 
-    setTimeout(() => {document.getElementById('fullscreen-button').disabled = false;}, 1000);
+    setTimeout(() => {
+        document.getElementById('fullscreen-button').disabled = false;
+    }, 1000);
     let xhr = new XMLHttpRequest();
 
     /*
@@ -136,20 +150,12 @@ function Fullscreen() {
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify({
-        value: 1 
+            value: 1
         })
     );
 
 
 }
-
-// function IFrameAlive() {
-//     if (document.getElementById('player')) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
 
 function PlayPause() {
     getAddrInfoRoutine();
@@ -157,7 +163,7 @@ function PlayPause() {
 
     if (!media) {
         // if we match the video playing then we can attempt to play pause it
-        const url = "http://"+ip+":"+port+'/play';
+        const url = `http://${ip}:${port}/play`;
         let xhr = new XMLHttpRequest();
 
         /*
@@ -166,30 +172,30 @@ function PlayPause() {
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify({
-            value: 1 
+                value: 1
             })
         );
-        return;
+
     } else if (prevVideoID) {
-        if (media != prevVideoID) {
+        if (media !== prevVideoID) {
             console.log(media)
             SendVideoLink();
             return;
-        } 
-            // if we match the video playing then we can attempt to play pause it
-            const url = "http://"+ip+":"+port+'/play';
-            let xhr = new XMLHttpRequest();
+        }
+        // if we match the video playing then we can attempt to play pause it
+        const url = `http://${ip}:${port}/play`;
+        let xhr = new XMLHttpRequest();
 
-            /*
-            * Create and send the request back to our API
-            */
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify({
-                value: 1 
-                })
-            );
+        /*
+        * Create and send the request back to our API
+        */
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify({
+                value: 1
+            })
+        );
     } else if (!prevVideoID) {
         SendVideoLink();
-    } 
+    }
 }

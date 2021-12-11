@@ -1,4 +1,12 @@
-const { ipcRenderer } = require('electron');
+/*
+ *
+ *  * Copyright (c) 2020, Nathan Reed <nreed@linux.com>
+ *  *
+ *  * SPDX-License-Identifier: MIT
+ *
+ */
+
+const {ipcRenderer} = require('electron');
 const os = require('os');
 const interfaces = os.networkInterfaces();
 const qr = require('qrcode');
@@ -30,13 +38,13 @@ const ip = window.sessionStorage.getItem('ip_addr')
  * create the qrcode element via the DOM, so the user has access to the phone application page
  */
 ipcRenderer.send('post-port', 'post');
-    const port = ipcRenderer.sendSync('get-port', 'port');
-    qr.toCanvas(
-        "http://"+ip+":"+port,
-        { scale: 20, errorCorrectionLevel: 'H' }, 
-        (err, canvas) => {
-            if (err) throw err;
-            var container = document.getElementById('card');
-            container.appendChild(canvas);
-        }
-    )
+const port = ipcRenderer.sendSync('get-port', 'port');
+qr.toCanvas(
+    "http://" + ip + ":" + port,
+    {scale: 20, errorCorrectionLevel: 'H'},
+    (err, canvas) => {
+        if (err) throw err;
+        let container = document.getElementById('card');
+        container.appendChild(canvas);
+    }
+)
