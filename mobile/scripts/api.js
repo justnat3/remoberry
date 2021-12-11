@@ -13,6 +13,9 @@ let volume;
 let prevVideoID;
 // TODO: URL should really just be in the global context
 
+// ensure that we have addr information
+window.onload = () => { getAddrInfoRoutine(); }
+
 /*
  * ensure to send the link for the youtube video
  */
@@ -27,7 +30,6 @@ function SendVideoLink() {
     // this is to know if we truly have to recreate the iframe
     prevVideoID = media;
 
-    // getAddrInfoRoutine();
     switch (true) {
 
         /*
@@ -133,6 +135,24 @@ function mute() {
     );
 }
 
+function Exit() {
+
+    const url = `http://${ip}:${port}/exit`;
+
+    /*
+     * Create and send the request back to our API
+     */
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({
+            value: 1
+        })
+    );
+
+    // document.body.remove();
+}
+
 function volumeDown() {
     const url = `http://${ip}:${port}/voldown`;
     console.log(url)
@@ -150,7 +170,6 @@ function volumeDown() {
 }
 
 function Fullscreen() {
-    getAddrInfoRoutine();
     const url = `http://${ip}:${port}/fullscreen`;
     console.log(url, ip, port)
     document.getElementById('fullscreen-button').disabled = true;
@@ -174,7 +193,6 @@ function Fullscreen() {
 }
 
 function PlayPause() {
-    getAddrInfoRoutine();
     let media = document.getElementById('media-input').value;
 
     if (!media) {

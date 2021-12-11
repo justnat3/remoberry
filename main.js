@@ -38,7 +38,7 @@ function createWindow() {
     })
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
       // set state for play pause
       mainWindow.webContents.executeJavaScript("window.sessionStorage.setItem('isPlaying', 1)", true).then(console.log("Set Playing state"));
@@ -165,6 +165,13 @@ expressApp.post('/mute', (_, res) => {
     );
     res.status(200);
     res.end();
+});
+
+expressApp.post('/exit', (_, res) => {
+    res.send(path.join(__dirname, 'mobile/Exit.html'));
+    res.status(200);
+    res.end();
+    mainWindow.close();
 });
 
 /*
