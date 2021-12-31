@@ -1,8 +1,5 @@
 name: CI
-on:
-  push:
-    branches:
-      - electron
+on: [push]
 jobs:
   build_on_mac:
     runs-on: macOS-latest
