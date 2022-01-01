@@ -38,7 +38,7 @@ function createWindow() {
     })
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
       // set state for play pause
       mainWindow.webContents.executeJavaScript("window.sessionStorage.setItem('isPlaying', 1)", true).then(console.log("Set Playing state"));

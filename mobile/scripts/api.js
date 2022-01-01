@@ -188,7 +188,18 @@ function Fullscreen() {
             value: 1
         })
     );
+}
 
+function getTotalDuration() {
+    const url = `http://${ip}:${port}/total`;
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", url, false);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send();
+    if (xhr.status == 200) {
+        let res = xhr.response;
+    }
 
 }
 

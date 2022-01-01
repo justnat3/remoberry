@@ -79,6 +79,7 @@ function createYoutubeIFrameInstance(split) {
             'onReady': onPlayerReady
         }
     });
+    console.log(player.getCurrentTime());
 
     // get DOM elements from the youtube iframe
     // player.getIframe().contentWindow.document
