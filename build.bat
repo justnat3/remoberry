@@ -1,2 +1,2 @@
 cd build
-electron-packager ./ Remoberry --all --overwrite
+electron-packager ../ Remoberry --all --overwrite

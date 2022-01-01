@@ -38,7 +38,7 @@ function createWindow() {
     })
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
       // set state for play pause
       mainWindow.webContents.executeJavaScript("window.sessionStorage.setItem('isPlaying', 1)", true).then(console.log("Set Playing state"));
@@ -75,7 +75,7 @@ app.on('window-all-closed', function () {
  * in the "landing" page for mobile we want to send the client the ip/port for our api in a cookie
  * also serve the volume as a cookie
  */
-expressApp.use(express.static('mobile'));
+expressApp.use(express.static(__dirname + '/mobile'));
 expressApp.use(cors());
 expressApp.get('/', (_, res) => {
 

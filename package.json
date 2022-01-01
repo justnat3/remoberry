@@ -4,7 +4,10 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "build": "electron-builder --mac --windows --linux",
+    "release": "electron-builder --mac --windows --linux --publish always"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -23,6 +26,7 @@
     "axios": "^0.24.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "electron-builder": "^22.14.5",
     "eslint": "^8.2.0",
     "express": "^4.17.1",
     "qrcode": "^1.4.4"
